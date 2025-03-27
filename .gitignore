@@ -1,0 +1,5 @@
+**/*.log
+**/*.mls
+**/*.epci
+**/hept_functions_c/
+**/main
