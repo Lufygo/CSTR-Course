@@ -1,5 +1,6 @@
+**/*.tar.gz
 **/*.log
 **/*.mls
 **/*.epci
-**/hept_functions_c/
+**/first_c/
 **/main

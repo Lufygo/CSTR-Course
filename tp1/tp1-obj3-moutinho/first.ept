@@ -9,7 +9,7 @@ tel
 node sum2(i:int) returns (o:int)
 let
   o = i + (0 fby i) ;
-Tel
+tel
 
 node counter () returns (cnt:int)
 let  
