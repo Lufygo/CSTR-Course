@@ -1,0 +1,72 @@
+type task_attributes = {
+    period : int ;
+    capacity : int ;
+    deadline : int ;
+    first_start : int
+}
+
+const ntasks : int = 2
+const tasks : task_attributes^ntasks = [
+    {
+        period=5;
+        capacity=2;
+        deadline=5;
+        first_start=0
+    },
+    {
+        period=7;
+        capacity=4;
+        deadline=7;
+        first_start=3
+    }
+]
+
+type task_state = Running | Ready | Waiting
+type task_status = {
+    status : task_state ;
+    current_deadline : int ;
+    left : int
+}
+
+type scheduler_state = {
+    current_date : int;
+    tasks : task_status^2
+}
+
+const init_sstate : scheduler_state = {
+    current_date = -1 ;
+    tasks = {
+        status = Waiting;
+        current_deadline = 0;
+        left = 0
+    }^2
+}
+
+
+fun update_selected(ts:task_status;selected:int;tid:int) returns (tso:task_status)
+let
+    tso =
+        if tid = selected then
+            { ts with .status = Running }
+        else
+            ts
+tel
+
+
+type select_acc = { tid : int; sdeadline: int }
+
+fun select_aux(ts:task_status; ta:task_attributes;tid:int ; acc:select_acc) returns (acc_o:select_acc)
+let
+    acc_o =
+        if (ts.status = Ready) and (ts.current_deadline <= acc.sdeadline) then
+            { tid = tid; sdeadline = ts.current_deadline }
+        else
+            acc
+tel
+
+fun select_one_task(ts:task_status^ntasks) returns(selected:int)
+var tmp : select_acc ;
+let
+    tmp = foldi<<ntasks>> select_aux(ts,tasks,{ tid = ntasks; sdeadline = 1073741824}) ;
+    selected = tmp.tid ;
+tel
